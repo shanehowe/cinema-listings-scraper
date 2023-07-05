@@ -52,7 +52,7 @@ def __parse_times(times_html_string: str) -> list[str]:
     for item in results:
         parsed_time_tag = item.findChild("strong")
         if type(parsed_time_tag) == Tag:
-            parsed_time_tag.append(parsed_time_tag.text)
+            parsed_times.append(parsed_time_tag.text)
     return parsed_times
 
 
