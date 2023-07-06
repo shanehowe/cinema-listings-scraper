@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup, ResultSet, Tag
 from movie import Movie
 from pprint import pprint
 import requests
-import bs4
 
 
 def get_cinema_soup() -> BeautifulSoup:
@@ -26,7 +25,7 @@ def get_cinema_listings(soup_object: BeautifulSoup) -> list[tuple[str, list]]:
             movie_titles.append(title.text)
         times = wrapper.find("div", class_="OMP_list2D")
         show_times.append(__parse_times(str(times)))
-    titles_and_times = filter(lambda x: len(x[1]) >= 0, zip(movie_titles, show_times))
+    titles_and_times = filter(lambda x: len(x[1]) > 0, zip(movie_titles, show_times))
     return list(titles_and_times)
 
 
@@ -35,10 +34,9 @@ def create_movie_objects(movie_titles_and_times: list[tuple[str, list]]) -> list
     Creates a list of Movies()
     from the list passed in
     """
-    movies: list[Movie] = []
-    for movie_item in movie_titles_and_times:
-        movie = Movie(movie_item[0], movie_item[1])
-        movies.append(movie)
+    movies = __filter_movies_before_six_pm(
+        [Movie(m[0], m[1]) for m in movie_titles_and_times]
+    )
     return movies
 
 
@@ -56,8 +54,24 @@ def __parse_times(times_html_string: str) -> list[str]:
     return parsed_times
 
 
+def __filter_movies_before_six_pm(movies: list[Movie]) -> list[Movie]:
+    filtered_movies = []
+    for movie in movies:
+        times = movie.get_times()
+        new_times: list[str] = []
+        for time in times:
+            hours, _ = time.split(":")
+            if int(hours) > 18:
+                new_times.append(time)
+        if len(new_times) > 0:
+            movie.set_times(new_times)
+            filtered_movies.append(movie)
+    return filtered_movies
+
 if __name__ == "__main__":
     soup = get_cinema_soup()
     listings = get_cinema_listings(soup)
     movies = create_movie_objects(listings)
     pprint(movies)
+    for movie in movies:
+        print(movie.to_html())
