@@ -4,7 +4,7 @@ class Movie:
         self._times = listing_times
         self._rotten_tomatoes: int | None = None
 
-    def get_rotten_tomato(self) -> int | str:
+    def get_rotten_tomato(self) -> int | None:
         return self._rotten_tomatoes
 
     def set_rotten_tomato(self, rotten_tom_score: int | None) -> None:
