@@ -1,14 +1,9 @@
 from bs4 import BeautifulSoup, ResultSet, Tag
 from movie import Movie
-from pprint import pprint
 import requests
 
 
 def get_cinema_soup() -> BeautifulSoup:
-    """
-    Fetch cinema web page
-    :return: BeautifulSoup(web_page)
-    """
     url = "https://omniplex.ie/cinema/killarney"
     response = requests.get(url)
     response.raise_for_status()
@@ -30,10 +25,6 @@ def get_cinema_listings(soup_object: BeautifulSoup) -> list[tuple[str, list]]:
 
 
 def create_movie_objects(movie_titles_and_times: list[tuple[str, list]]) -> list[Movie]:
-    """
-    Creates a list of Movies()
-    from the list passed in
-    """
     movies = __filter_movies_before_six_pm(
         [Movie(m[0], m[1]) for m in movie_titles_and_times]
     )
