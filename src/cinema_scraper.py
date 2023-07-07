@@ -67,11 +67,3 @@ def __filter_movies_before_six_pm(movies: list[Movie]) -> list[Movie]:
             movie.set_times(new_times)
             filtered_movies.append(movie)
     return filtered_movies
-
-if __name__ == "__main__":
-    soup = get_cinema_soup()
-    listings = get_cinema_listings(soup)
-    movies = create_movie_objects(listings)
-    pprint(movies)
-    for movie in movies:
-        print(movie.to_html())
