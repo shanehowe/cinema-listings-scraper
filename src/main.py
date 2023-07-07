@@ -33,7 +33,7 @@ def main():
     try:
         server.sendmail(from_address, to_addresses, email.as_string())
     except Exception as e:
-        logging.error(f"Email not send.\n{e}")
+        logging.error(f"Email not sent.\n{e}")
     finally:
         server.quit()
 
