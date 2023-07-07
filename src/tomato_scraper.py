@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
-import cinema_scraper
 
 
 def get_headless_browser() -> WebDriver:
@@ -32,19 +31,3 @@ def get_tomato_score(web_driver: WebDriver, title: str) -> int | None:
     if score is None or not score.isdigit():
         return None
     return int(score)
-
-
-if __name__ == "__main__":
-    cinema_soup = cinema_scraper.get_cinema_soup()
-    cinema_listings = cinema_scraper.get_cinema_listings(cinema_soup)
-    movies = cinema_scraper.create_movie_objects(cinema_listings)
-    driver = get_headless_browser()
-    for movie in movies:
-        try:
-            score = get_tomato_score(driver, movie.get_title())
-            movie.set_rotten_tomato(score)
-            print(movie)
-        except Exception as e:
-            print(e)
-            continue
-    driver.close()
