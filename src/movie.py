@@ -4,7 +4,7 @@ class Movie:
         self._times = listing_times
         self._rotten_tomatoes: int | None = None
 
-    def get_rotten_tomato(self) -> int | None:
+    def get_rotten_tomato(self) -> int | str:
         return self._rotten_tomatoes
 
     def set_rotten_tomato(self, rotten_tom_score: int | None) -> None:
@@ -21,15 +21,15 @@ class Movie:
 
     def to_html(self):
         rotten_tomato_score = (
-            self._rotten_tomatoes if self._rotten_tomatoes is not None else "N/A"
+            f"{self._rotten_tomatoes}%" if self._rotten_tomatoes is not None else "N/A"
         )
-        listing_times = "<br>".join(self._times)
+        listing_times = ", ".join(self._times)
 
         html = f"""
             <div>
-                <h2>{self._title}</h2>
-                <p>Rotten Tomatoes Score: {rotten_tomato_score}</p>
-                <p>Listing Times:<br>{listing_times}</p>
+                <h3>{self._title}</h3>
+                <p>Rotten tomatoes 🍅: {rotten_tomato_score}</p>
+                <p>Listing Times ⏰: {listing_times}</p>
             </div>
         """
         return html
