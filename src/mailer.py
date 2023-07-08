@@ -34,11 +34,39 @@ def build_html_email(movies: list[Movie]) -> MIMEMultipart:
 
     html_content = f"""
         <html>
-            <head></head>
+            <head>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+
+                    }}
+                    
+                    h3 {{
+                        color: #333333;
+                        font-size: 18px;
+                        text-align: center;
+                    }}
+                    
+                    p {{
+                        color: #777777;
+                        font-size: 14px;
+                        text-align: center;
+                    }}
+                    
+                    .container {{
+                        max-width: 600px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        background-color: #ffffff;
+                        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+                    }}
+                </style>
+            </head>
             <body>
+                <p style="text-align: center;">🎬 Here's what's on in the cinema tonight 🎬</p>
                 {movies_html_section}
             </body>
-        </html>
+            </html>
     """
     part = MIMEText(html_content, "html")
     message.attach(part)
