@@ -2,7 +2,7 @@ class Movie:
     def __init__(self, title: str, listing_times: list[str]) -> None:
         self._title = title
         self._times = listing_times
-        self._rating = None
+        self._rating: str | None = None
 
     def get_rating(self) -> str | None:
         return self._rating
