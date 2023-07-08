@@ -1,3 +1,5 @@
+import os
+from datetime import datetime
 from bs4 import BeautifulSoup, ResultSet, Tag
 from movie import Movie
 import requests
@@ -29,6 +31,24 @@ def create_movie_objects(movie_titles_and_times: list[tuple[str, list]]) -> list
         [Movie(m[0], m[1]) for m in movie_titles_and_times]
     )
     return movies
+
+
+def get_movie_rating(title: str) -> str | None:
+    api_key = os.getenv("API_KEY")
+    if not api_key:
+        raise Exception("API_KEY not set.")
+
+    # Just assume it was released this year
+    year = datetime.now().year
+    url = f"http://www.omdbapi.com/?apikey={api_key}&t={title}&y={year}"
+    response = requests.get(url=url)
+
+    json_response = response.json()
+    if type(json_response) != dict:
+        return None
+
+    rating = json_response.get("imdbRating")
+    return rating
 
 
 def __parse_times(times_html_string: str) -> list[str]:
